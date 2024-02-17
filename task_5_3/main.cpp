@@ -2,37 +2,28 @@
 #include <vector>
 #include <algorithm>
 
-class get_sum {
+class sum_and_count {
 public:
     void operator()(int e) {
         if (e % 3 == 0) {
             this->sum += e;
+            this->count++;
         }
     }
 
-    int operator()() const {
+    [[nodiscard]] int get_count() const {
+        return count;
+    }
+
+    [[nodiscard]] int get_sum() const {
         return sum;
     }
 
 private:
     int sum{};
-};
-
-class get_count {
-public:
-    void operator()(int e) {
-        if (e % 3 == 0) {
-            this->count++;
-        }
-    }
-
-    int operator()() const {
-        return count;
-    }
-
-private:
     int count{};
 };
+
 
 int main() {
     std::vector<int> vector{4, 1, 3, 6, 25, 54};
@@ -43,13 +34,10 @@ int main() {
     }
     std::cout << '\n';
 
-    get_sum sum;
-    sum = std::for_each(vector.begin(), vector.end(), sum);
-    std::cout << "[OUT]: get_sum() = " << sum() << '\n';
-
-    get_count count;
-    count = std::for_each(vector.begin(), vector.end(), count);
-    std::cout << "[OUT]: get_count() = " << count() << '\n';
+    sum_and_count snc;
+    snc = std::for_each(vector.begin(), vector.end(), snc);
+    std::cout << "[OUT]: get_sum() = " << snc.get_sum() << '\n';
+    std::cout << "[OUT]: get_count() = " << snc.get_count() << '\n';
 
     return 0;
 }
